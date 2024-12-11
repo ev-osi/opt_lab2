@@ -44,7 +44,7 @@ jobs:
         sleep 2
 
         # Test: Valid client-server interaction
-        # echo "Connecting to server at 127.0.0.1:8080" > EXPECTED_OUTPUT.txt
+         echo "Connecting to server at 127.0.0.1:8080" > EXPECTED_OUTPUT.txt
         # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
         # echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
         # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
