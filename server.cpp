@@ -49,7 +49,7 @@ void* worker_thread(void* arg) {
         struct statvfs stat;
         if (statvfs(buffer, &stat) != 0) {
             perror("statvfs failed");
-            snprintf(buffer, BUFFER_SIZE, "Error");
+            snprintf(buffer, BUFFER_SIZE, "Error: Unable to retrieve file system information");
         }
         else {
             int64_t free_space = static_cast<int64_t>(stat.f_bfree) * stat.f_bsize;
