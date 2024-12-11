@@ -43,19 +43,25 @@ jobs:
         sleep 2
 
         # Test: Valid client-server interaction
-        echo "Testing valid path" > EXPECTED_OUTPUT.txt
-        echo "Server response: Free: " >> EXPECTED_OUTPUT.txt
-        echo "Testing invalid path" >> EXPECTED_OUTPUT.txt
-        echo "Server response: Error" >> EXPECTED_OUTPUT.txt
+        echo "Connecting to server at 127.0.0.1:8080" > EXPECTED_OUTPUT.txt
+        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
+        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
+        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        echo "Server response: Error: " >> EXPECTED_OUTPUT.txt
+        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        echo "Server response: Exiting." >> EXPECTED_OUTPUT.txt
 
         (
           echo "/"
           echo "/home"
           echo "/invalid"
+          echo "exit"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
 
         # Compare the expected and actual output (allowing for dynamic parts)
-        if ! grep -q "Free:" ACTUAL_OUTPUT.txt || ! grep -q "Error" ACTUAL_OUTPUT.txt; then
+        if ! diff -q EXPECTED_OUTPUT.txt ACTUAL_OUTPUT.txt; then
             echo "Test failed: Output mismatch"
             echo "Expected:"
             cat EXPECTED_OUTPUT.txt

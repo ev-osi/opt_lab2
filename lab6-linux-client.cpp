@@ -52,16 +52,19 @@ int main(int argc, char *argv[]) {
         path[strcspn(path, "\n")] = '\0';
 
         if (strcmp(path, "exit") == 0) {
+            snprintf(buffer, BUFFER_SIZE, "Exiting.");
+            sendto(clientSocket, buffer, strlen(buffer), 0,
+                   (struct sockaddr *)&serverAddr, serverAddrLen);
             break;
         }
 
-	if (access(path, F_OK) == -1) {
-        	perror("Path does not exist");
-        	snprintf(buffer, BUFFER_SIZE, "Error: Path does not exist");
-        	sendto(clientSocket, buffer, strlen(buffer), 0,
-               		(struct sockaddr *)&serverAddr, serverAddrLen);
-        	continue;
-    	}
+        if (access(path, F_OK) == -1) {
+            perror("Path does not exist");
+            snprintf(buffer, BUFFER_SIZE, "Error: Path does not exist");
+            sendto(clientSocket, buffer, strlen(buffer), 0,
+                   (struct sockaddr *)&serverAddr, serverAddrLen);
+            continue;
+        }
 
         if (sendto(clientSocket, path, strlen(path), 0,
                    (struct sockaddr *)&serverAddr, serverAddrLen) == -1) {
