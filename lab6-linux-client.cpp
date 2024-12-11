@@ -13,7 +13,7 @@
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <server_ip> [port]\n", argv[0]);
-        return 1;
+        exit(1);
     }
 
     const char *server_ip = argv[1];
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     clientSocket = socket(AF_INET, SOCK_DGRAM, 0);
     if (clientSocket < 0) {
         perror("Socket creation failed");
-        return 1;
+        exit(1);
     }
 
     serverAddr.sin_family = AF_INET;
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     if (inet_pton(AF_INET, server_ip, &serverAddr.sin_addr) <= 0) {
         fprintf(stderr, "Invalid address or address not supported.\n");
         close(clientSocket);
-        return 1;
+        exit(1);
     }
 
     // Output connection message
