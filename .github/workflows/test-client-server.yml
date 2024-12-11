@@ -51,7 +51,7 @@ jobs:
         (
           echo "/"
           echo "/home"
-          echo "exit"
+          echo "/invalid"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
 
         # Compare the expected and actual output (allowing for dynamic parts)
