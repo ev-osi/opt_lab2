@@ -61,7 +61,7 @@ jobs:
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
 
         # Compare the expected and actual output (allowing for dynamic parts)
-        if ! diff -q EXPECTED_OUTPUT.txt ACTUAL_OUTPUT.txt; then
+        diff -I "Free:" EXPECTED_OUTPUT.txt ACTUAL_OUTPUT.txt
             echo "Test failed: Output mismatch"
             echo "Expected:"
             cat EXPECTED_OUTPUT.txt
