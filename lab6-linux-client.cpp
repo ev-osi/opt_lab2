@@ -7,24 +7,20 @@
 #include <cstdlib>
 #include <cstring>
 
-#define DEFAULT_PORT 8080
 #define BUFFER_SIZE 1024
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s <server_ip> [port]\n", argv[0]);
+    if (argc < 3) {
+        fprintf(stderr, "Usage: %s <server_ip> <port>\n", argv[0]);
         exit(1);
     }
 
     const char *server_ip = argv[1];
-    int port = DEFAULT_PORT;
+    int port = atoi(argv[2]);
 
-    if (argc > 2) {
-        port = atoi(argv[2]);
-        if (port <= 0) {
-            fprintf(stderr, "Invalid port number. Using default port %d\n", DEFAULT_PORT);
-            port = DEFAULT_PORT;
-        }
+    if (port <= 0 || port > 65535) {
+        fprintf(stderr, "Error: Invalid port number. Please specify a port between 1 and 65535.\n");
+        exit(1);
     }
 
     int clientSocket;
