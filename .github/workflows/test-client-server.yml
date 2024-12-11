@@ -37,32 +37,35 @@ jobs:
     - name: Test Client and Server Interaction
       run: |
       
+        # Test: Valid client-server interaction with expected outputs
+
         # Start server in the background
         ./server 8080 & SERVER_PID=$!
 
         # Give the server time to start
         sleep 2
 
-        # Test: Valid client-server interaction
-         echo "Connecting to server at 127.0.0.1:8080" > EXPECTED_OUTPUT.txt
-        # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
-        # echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
-        # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
-        # echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
-        # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
-        # echo "Server response: Error: " >> EXPECTED_OUTPUT.txt
+        # Create expected output with fixed responses
+        echo "Connecting to server at 127.0.0.1:8080" > EXPECTED_OUTPUT.txt
+        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
+        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
+        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        echo "Server response: Error: " >> EXPECTED_OUTPUT.txt
         echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
         echo "Server response: Exiting." >> EXPECTED_OUTPUT.txt
 
+        # Run client with test inputs
         (
-          # echo "/"
-          # echo "/home"
-          # echo "/invalid"
-          echo "exit"
+            echo "/"
+            echo "/home"
+            echo "/invalid"
+            echo "exit"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
 
         # Compare the expected and actual output (allowing for dynamic parts)
-        diff -I "Free:" EXPECTED_OUTPUT.txt ACTUAL_OUTPUT.txt
+        if ! diff -I "Free:" -I "Used:" -q EXPECTED_OUTPUT.txt ACTUAL_OUTPUT.txt; then
             echo "Test failed: Output mismatch"
             echo "Expected:"
             cat EXPECTED_OUTPUT.txt
@@ -74,5 +77,6 @@ jobs:
 
         # Kill the server after the test
         kill $SERVER_PID
+
 
 
