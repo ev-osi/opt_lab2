@@ -53,7 +53,7 @@ jobs:
         # echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
         # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
         # echo "Path does not exist:" >> EXPECTED_OUTPUT.txt
-        echo "Enter the path to check (or 'exit' to quit): " >> EXPECTED_OUTPUT.txt
+        echo -n "Enter the path to check (or 'exit' to quit): " >> EXPECTED_OUTPUT.txt
         # echo "Server response: Exiting." >> EXPECTED_OUTPUT.txt
 
         # Run client with test inputs
