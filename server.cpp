@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/statvfs.h>
+#include <sys/stat.h>
 #include <arpa/inet.h>
 #include <iostream>
 #include <queue>
@@ -46,17 +47,37 @@ void* worker_thread(void* arg) {
         buffer[recv_len] = '\0';
         printf("Received path: %s\n", buffer);
 
+        // Проверяем существование директории
+        if (access(buffer, F_OK) != 0) {
+            snprintf(buffer, BUFFER_SIZE, "Error: Directory does not exist");
+            sendto(client_socket, buffer, strlen(buffer), 0,
+                   (struct sockaddr*)&client_addr, addr_len);
+            fprintf(stderr, "Directory does not exist: %s\n", buffer);
+            continue;
+        }
+
+        // Проверяем, является ли путь директорией
+        struct stat path_stat;
+        if (stat(buffer, &path_stat) != 0 || !S_ISDIR(path_stat.st_mode)) {
+            snprintf(buffer, BUFFER_SIZE, "Error: Path is not a directory");
+            sendto(client_socket, buffer, strlen(buffer), 0,
+                   (struct sockaddr*)&client_addr, addr_len);
+            fprintf(stderr, "Path is not a directory: %s\n", buffer);
+            continue;
+        }
+
+        // Получаем информацию о файловой системе
         struct statvfs stat;
         if (statvfs(buffer, &stat) != 0) {
             snprintf(buffer, BUFFER_SIZE, "Error: Unable to retrieve file system information");
-        }
-        else {
+        } else {
             int64_t free_space = static_cast<int64_t>(stat.f_bfree) * stat.f_bsize;
             int64_t total_space = static_cast<int64_t>(stat.f_blocks) * stat.f_bsize;
             int64_t used_space = total_space - free_space;
             snprintf(buffer, BUFFER_SIZE, "Free: %ld, Used: %ld", free_space, used_space);
         }
 
+        // Отправляем ответ клиенту
         sendto(client_socket, buffer, strlen(buffer), 0,
             (struct sockaddr*)&client_addr, addr_len);
         printf("Sent response: %s\n", buffer);

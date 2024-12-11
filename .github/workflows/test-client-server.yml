@@ -44,28 +44,18 @@ jobs:
 
         # Give the server time to start
         sleep 2
-
-        # Create expected output with fixed responses
-        # echo "Connecting to server at 127.0.0.1:8080" > EXPECTED_OUTPUT.txt
-        # echo "Enter the path to check (or 'exit' to quit): Server response: Free: (.*), Used: (.*)" >> EXPECTED_OUTPUT.txt
-        # echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
-        # echo "Enter the path to check (or 'exit' to quit): Server response: Free: (.*), Used: (.*)" >> EXPECTED_OUTPUT.txt
-        # echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
-        # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
-        # echo "Path does not exist:" >> EXPECTED_OUTPUT.txt
-        # echo -n "Enter the path to check (or 'exit' to quit): " >> EXPECTED_OUTPUT.txt
-        # echo "Server response: Exiting." >> EXPECTED_OUTPUT.txt
         
         echo "Connecting to server at 127.0.0.1:8080" > EXPECTED_OUTPUT.txt
         echo "Enter the path to check (or 'exit' to quit): Server response: Free: (.*), Used: (.*)" >> EXPECTED_OUTPUT.txt
         echo "Enter the path to check (or 'exit' to quit): Server response: Free: (.*), Used: (.*)" >> EXPECTED_OUTPUT.txt
+        echo "Enter the path to check (or 'exit' to quit): Server response: Error: Directory does not exist" >> EXPECTED_OUTPUT.txt
         echo -n "Enter the path to check (or 'exit' to quit): " >> EXPECTED_OUTPUT.txt
 
         # Run client with test inputs
         (
             echo "/"
             echo "/home"
-            # echo "/invalid"
+            echo "/invalid"
             echo "exit"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
 
