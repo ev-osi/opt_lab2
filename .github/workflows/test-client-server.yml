@@ -50,7 +50,7 @@ jobs:
         echo "Server response: Error" >> EXPECTED_OUTPUT.txt
 
         (
-          echo "/tmp"
+          echo "/"
           echo "/invalid_path"
           echo "exit"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
