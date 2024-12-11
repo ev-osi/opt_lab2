@@ -37,8 +37,7 @@ jobs:
     - name: Test Client and Server Interaction
       run: |
         # Start server in the background
-        ./server 8080 &
-        SERVER_PID=$!
+        ./server 8080 & SERVER_PID=$!
 
         # Give the server time to start
         sleep 2
@@ -51,6 +50,7 @@ jobs:
 
         (
           echo "/"
+          echo "/home"
           echo "/invalid_path"
           echo "exit"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
