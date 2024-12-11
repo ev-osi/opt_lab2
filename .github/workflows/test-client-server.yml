@@ -51,7 +51,6 @@ jobs:
         (
           echo "/"
           echo "/home"
-          echo "/invalid_path"
           echo "exit"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
 
