@@ -24,6 +24,7 @@ jobs:
 
     - name: Test Client Arguments
       run: |
+      
         # Test: No arguments
         ./client || test $? -eq 1
 
