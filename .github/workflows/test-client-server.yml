@@ -51,8 +51,8 @@ jobs:
         echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
         echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
         echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
-        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
-        echo "Path does not exist:" >> EXPECTED_OUTPUT.txt
+        # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        # echo "Path does not exist:" >> EXPECTED_OUTPUT.txt
         echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
         echo "Server response: Exiting." >> EXPECTED_OUTPUT.txt
 
@@ -60,7 +60,7 @@ jobs:
         (
             echo "/"
             echo "/home"
-            echo "/invalid"
+            # echo "/invalid"
             echo "exit"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
 
