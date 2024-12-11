@@ -56,13 +56,13 @@ jobs:
 
         # Compare the expected and actual output (allowing for dynamic parts)
         if ! grep -q "Free:" ACTUAL_OUTPUT.txt || ! grep -q "Error" ACTUAL_OUTPUT.txt; then
-          echo "Test failed: Output mismatch"
-          echo "Expected:"
-          cat EXPECTED_OUTPUT.txt
-          echo "Actual:"
-          cat ACTUAL_OUTPUT.txt
-          kill $SERVER_PID
-          exit 1
+            echo "Test failed: Output mismatch"
+            echo "Expected:"
+            cat EXPECTED_OUTPUT.txt
+            echo "Actual:"
+            cat ACTUAL_OUTPUT.txt
+            kill $SERVER_PID
+            exit 1
         fi
 
         # Kill the server after the test
