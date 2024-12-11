@@ -48,7 +48,6 @@ void* worker_thread(void* arg) {
 
         struct statvfs stat;
         if (statvfs(buffer, &stat) != 0) {
-            perror("statvfs failed");
             snprintf(buffer, BUFFER_SIZE, "Error: Unable to retrieve file system information");
         }
         else {
