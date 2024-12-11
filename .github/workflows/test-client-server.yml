@@ -17,22 +17,55 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y g++
 
     - name: Build Server
-      run: g++ -o server lab6-linux-server.cpp
+      run: g++ -pthread -o server server.cpp
 
     - name: Build Client
-      run: g++ -o client client.cpp
+      run: g++ -o client lab6-linux-client.cpp
 
     - name: Test Client Arguments
       run: |
+        # Test: No arguments
         ./client || test $? -eq 1
+
+        # Test: Invalid port (zero)
         ./client 127.0.0.1 0 || test $? -eq 1
+
+        # Test: Invalid port (non-integer)
         ./client 127.0.0.1 -1234.5 || test $? -eq 1
-    
+
     - name: Test Client and Server Interaction
       run: |
-        ./server 12345 &
+        # Start server in the background
+        ./server 8080 &
         SERVER_PID=$!
+
+        # Give the server time to start
         sleep 2
-        echo -e "reg aaa\nreg aaa\nquit\n" | ./client 127.0.0.1 12345 > ACTUAL_OUTPUT.txt
+
+        # Test: Valid client-server interaction
+        echo "Testing valid path" > EXPECTED_OUTPUT.txt
+        echo "Server response: Free: " >> EXPECTED_OUTPUT.txt
+        echo "Testing invalid path" >> EXPECTED_OUTPUT.txt
+        echo "Server response: Error" >> EXPECTED_OUTPUT.txt
+
+        (
+          echo "/tmp"
+          echo "/invalid_path"
+          echo "exit"
+        ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
+
+        # Compare the expected and actual output (allowing for dynamic parts)
+        if ! grep -q "Free:" ACTUAL_OUTPUT.txt || ! grep -q "Error" ACTUAL_OUTPUT.txt; then
+          echo "Test failed: Output mismatch"
+          echo "Expected:"
+          cat EXPECTED_OUTPUT.txt
+          echo "Actual:"
+          cat ACTUAL_OUTPUT.txt
+          kill $SERVER_PID
+          exit 1
+        fi
+
+        # Kill the server after the test
         kill $SERVER_PID
+
 
