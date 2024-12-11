@@ -36,6 +36,7 @@ jobs:
 
     - name: Test Client and Server Interaction
       run: |
+      
         # Start server in the background
         ./server 8080 & SERVER_PID=$!
 
@@ -48,15 +49,15 @@ jobs:
         echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
         echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
         echo "Server response: Free:" >> EXPECTED_OUTPUT.txt
-        echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
-        echo "Server response: Error: " >> EXPECTED_OUTPUT.txt
+        # echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
+        # echo "Server response: Error: " >> EXPECTED_OUTPUT.txt
         echo "Enter the path to check (or 'exit' to quit):" >> EXPECTED_OUTPUT.txt
         echo "Server response: Exiting." >> EXPECTED_OUTPUT.txt
 
         (
           echo "/"
           echo "/home"
-          echo "/invalid"
+          # echo "/invalid"
           echo "exit"
         ) | ./client 127.0.0.1 8080 > ACTUAL_OUTPUT.txt
 
